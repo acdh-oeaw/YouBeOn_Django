@@ -1,1 +1,22 @@
 db.sqlite3
+youbeon_api/__pycache__/serializer.cpython-38.pyc
+
+# Byte-compiled
+.cache/*
+staticfiles/*
+*.pyc
+
+#sqlitedb
+db.sqlite3
+
+# cache
+youbeon_api/__pycache__/
+youbeon_backend/__pycache__/
+
+# IDE
+.idea
+
+# the only file we want to have in git for migrations is __init__.py
+youbeon_api/migrations/*
+
+

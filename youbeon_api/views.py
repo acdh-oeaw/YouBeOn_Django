@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 
-from youbeon_api.serializers import KategorieSerializer, IdeeSerializer, ReligionSerializer, InfluencerSerializer, OrtSerializer
+from youbeon_api.serializer import KategorieSerializer, IdeeSerializer, ReligionSerializer, InfluencerSerializer, OrtSerializer
 from youbeon_api.models import Kategorie, Idee, Religion, Influencer, Ort
 
 

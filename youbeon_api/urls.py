@@ -12,5 +12,5 @@ router.register(r'influencer', InfluencerViewSet)
 router.register(r'ort', OrtViewSet)
 
 urlpatterns = [
-   path('test', include(youbeon_api.urls)),
+   path('', include(router.urls)),
 ]
