@@ -4,12 +4,6 @@ __pycache__/
 staticfiles/*
 *.pyc
 
-env/*
-# sensitive data
-# deprecated, use environment for docker or kubernetes secrets
-dboeannotation/settings/server.py
-dboeannotation/settings/dev.py
-
 #sqlitedb
 db.sqlite3
 
@@ -17,11 +11,5 @@ db.sqlite3
 .idea
 
 # the only file we want to have in git for migrations is __init__.py
-annotations/migrations/*
+youbeon_api/migrations/*
 
-
-#Ipython Notebook
-.ipynb_checkpoints
-
-# the only file we want to have in git for settings is basex.py
-dboeannotation/settings/*

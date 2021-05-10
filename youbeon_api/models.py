@@ -17,16 +17,15 @@ class Influencer(models.Model):
     osm_id = models.IntegerField()
     gnd = models.CharField(max_length=100)
 
-
-class Kategorie(models:Model):
-    id = id = models.AutoField(primary_key=True)
+class Kategorie(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
 
-class Religion(models:Model):
-    id = id = models.AutoField(primary_key=True)
+class Religion(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
 
-class Idee(models:Model):
-    id = id = models.AutoField(primary_key=True)
+class Idee(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
 
