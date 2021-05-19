@@ -9,9 +9,12 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-
 import os
+import re
+from struct import unpack
 from environ import Env
+from corsheaders.defaults import default_headers
+
 
 def generate_secret_key(length=50):
     sample = '1234567890-=!@#$%^&*()_+qwertyuiopasdfghjklzxcvbnm'
