@@ -13,7 +13,7 @@ import os
 import re
 from struct import unpack
 from corsheaders.defaults import default_headers
-
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,9 +31,7 @@ def generate_secret_key(length=50):
 
 throw_away_key = generate_secret_key()
 
-
-DJANGO_SECRET_KEY = (str, throw_away_key)
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'l%mpzf8ske%n22sm-z1^h9v0ozab4h1_-^jh8ybi*pis^yh15(')
+SECRET_KEY = (str, throw_away_key)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -109,10 +107,8 @@ WSGI_APPLICATION = 'youbeon_backend.wsgi.application'
 #}
 
 DATABASES = {
-    'default': os.environ.get('DATABASE_URL') or \
-        'sqlite:///'+os.path.join(BASE_DIR, 'db.sqlite3')
+    'default': dj_database_url.config(default='sqlite:///'+os.path.join(BASE_DIR, 'db.sqlite3'))
 }
-
 
 
 # Password validation
