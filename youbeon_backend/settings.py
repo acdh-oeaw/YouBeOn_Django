@@ -101,7 +101,8 @@ WSGI_APPLICATION = 'youbeon_backend.wsgi.application'
 #}
 
 DATABASES = {
-    'default': os.environ.get('DATABASE_URL', (default='sqlite:///'+os.path.join(BASE_DIR, 'db.sqlite3')))
+    'default': os.environ.get('DATABASE_URL') or \
+        'sqlite:///'+os.path.join(BASE_DIR, 'db.sqlite3')
 }
 
 
