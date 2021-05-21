@@ -24,7 +24,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(os.path.join(__file__
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'l%mpzf8ske%n22sm-z1^h9v0ozab4h1_-^jh8ybi*pis^yh15('
-DJANGO_SECRET_KEY=(str, throw_away_key),
+
+def generate_secret_key(length=50):
+    sample = '1234567890-=!@#$%^&*()_+qwertyuiopasdfghjklzxcvbnm'
+    return ''.join([sample[unpack('>I', os.urandom(4))[0] % len(sample)] for i in range(length)])
+
+throw_away_key = generate_secret_key()
+
+
+DJANGO_SECRET_KEY = (str, throw_away_key)
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'l%mpzf8ske%n22sm-z1^h9v0ozab4h1_-^jh8ybi*pis^yh15(')
 
 
