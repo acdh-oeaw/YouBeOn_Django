@@ -79,7 +79,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
-    "https://app.youbeon.eu/"
+    "https://app.youbeon.eu"
 ]
 
 ROOT_URLCONF = 'youbeon_backend.urls'
