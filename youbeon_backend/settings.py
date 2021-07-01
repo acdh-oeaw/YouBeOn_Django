@@ -77,7 +77,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = False
 
 CORS_ALLOW_METHODS = [
@@ -101,11 +100,8 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-#CORS_ALLOWED_ORIGINS = [
-#    "http://localhost:8080",
-#    "http://127.0.0.1:9000",
-#    "https://app.youbeon.eu"
-#]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS')
+
 
 ROOT_URLCONF = 'youbeon_backend.urls'
 
