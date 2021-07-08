@@ -125,6 +125,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'youbeon_backend.wsgi.application'
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
