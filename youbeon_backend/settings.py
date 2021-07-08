@@ -100,8 +100,7 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS')
-
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
 
 ROOT_URLCONF = 'youbeon_backend.urls'
 
@@ -122,6 +121,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'youbeon_backend.wsgi.application'
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Database
