@@ -105,6 +105,9 @@ CORS_ALLOW_HEADERS = [
 
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '*').split(',')
 
+print("#################")
+print(CORS_ALLOWED_ORIGINS)
+
 ROOT_URLCONF = 'youbeon_backend.urls'
 
 TEMPLATES = [
