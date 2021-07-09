@@ -120,7 +120,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'youbeon_backend.wsgi.application'
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '*').split(',')
+CORS_ORIGIN_WHITELIST = os.environ.get('CORS_ALLOWED_ORIGINS', '*').split(',')
 
 #CORS_ORIGIN_ALLOW_ALL = True
 
