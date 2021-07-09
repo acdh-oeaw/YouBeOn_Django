@@ -15,9 +15,6 @@ from struct import unpack
 from corsheaders.defaults import default_headers
 import dj_database_url
 
-print('--------------------------')
-print(os.environ)
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(os.path.join(__file__, '../'))))
@@ -103,11 +100,6 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '*').split(',')
-
-print("#################")
-print(CORS_ALLOWED_ORIGINS)
-
 ROOT_URLCONF = 'youbeon_backend.urls'
 
 TEMPLATES = [
@@ -128,7 +120,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'youbeon_backend.wsgi.application'
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '*').split(',')
+
+#CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Database
