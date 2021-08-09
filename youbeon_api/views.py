@@ -21,21 +21,21 @@ class KategorieViewSet(viewsets.ModelViewSet):
     queryset = Kategorie.objects.all()
     serializer_class = KategorieSerializer
 
+def idee_detail(request):
+    try:
+        ids = request.GET.get('ids')
+        ids = ids.split(',')
+        ideen = Idee.objects.filter(pk__in=ids)
+    except Idee.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = IdeeSerializer(ideen, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
 class IdeeViewSet(viewsets.ModelViewSet):
     queryset = Idee.objects.all()
     serializer_class = IdeeSerializer
-
-    @csrf_exempt
-    def idee_detail(request, *pk):
-        try:
-            snippet = Idee.objects.filter(pk__in=pk)
-        except Idee.DoesNotExist:
-            return HttpResponse(status=404)
-
-        if request.method == 'GET':
-            serializer = IdeeSerializer(snippet)
-            return JsonResponse(serializer.data)
 
 
 class ReligionViewSet(viewsets.ModelViewSet):
