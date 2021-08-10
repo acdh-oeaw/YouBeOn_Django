@@ -34,6 +34,18 @@ def idee_detail(request):
         serializer = IdeeSerializer(ideen, many=True)
         return JsonResponse(serializer.data, safe=False)
 
+def kategorie_detail(request):
+    try:
+        ids = request.GET.get('ids')
+        ids = ids.split(',')
+        kat = Kategorie.objects.filter(pk__in=ids)
+    except Idee.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = KategorieSerializer(kat, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
 def idee_menge(request):
     religionGet = request.GET.get('religion')
     orte = OrtSerializer(Ort.objects.filter(religion = religionGet), many=True).data

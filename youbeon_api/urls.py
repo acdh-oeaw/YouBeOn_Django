@@ -14,6 +14,7 @@ router.register(r'ort', OrtViewSet)
 
 urlpatterns = [
    path('idee/filter/', views.idee_detail),
+   path('kategorie/filter/', views.kategorie_detail),
    path('idee/menge/', views.idee_menge),
    path('', include(router.urls)),
 ]
