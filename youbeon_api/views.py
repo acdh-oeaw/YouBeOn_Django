@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from collections import Counter
@@ -89,10 +89,42 @@ def upload(request):
         "upload_form.html",
         {
             "form": form,
-            "title": "Excel file upload and download example",
+            "title": "Database upload",
             "header": (
-                "Please choose any excel file "
-                + "from your cloned repository:"
+                "Bitte wähle das Hauptfile mti den Verknüpfungen aus:"
             ),
+        },
+    )
+
+def import_data(request):
+    if request.method == "POST":
+        form = UploadFileForm(request.POST, request.FILES)
+
+        def choice_func(row):
+            q = Question.objects.filter(slug=row[0])[0]
+            row[0] = q
+            return row
+
+        if form.is_valid():
+            request.FILES["file"].save_book_to_database(
+                models=[Question, Choice],
+                initializers=[None, choice_func],
+                mapdicts=[
+                    ["question_text", "pub_date", "slug"],
+                    {"Question": "question", "Choice": "choice_text", "Votes": "votes"},
+                ],
+            )
+            return redirect("handson_view")
+        else:
+            return HttpResponseBadRequest()
+    else:
+        form = UploadFileForm()
+    return render(
+        request,
+        "upload_form.html",
+        {
+            "form": form,
+            "title": "Import excel data into database example",
+            "header": "Please upload sample-data.xls:",
         },
     )
