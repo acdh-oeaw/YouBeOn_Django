@@ -17,7 +17,8 @@ import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(os.path.join(__file__, '../'))))
+BASE_DIR = os.path.dirname(os.path.dirname(
+    os.path.abspath(os.path.join(__file__, '../'))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -25,9 +26,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(os.path.join(__file__
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'l%mpzf8ske%n22sm-z1^h9v0ozab4h1_-^jh8ybi*pis^yh15('
 
+
 def generate_secret_key(length=50):
     sample = '1234567890-=!@#$%^&*()_+qwertyuiopasdfghjklzxcvbnm'
     return ''.join([sample[unpack('>I', os.urandom(4))[0] % len(sample)] for i in range(length)])
+
 
 throw_away_key = generate_secret_key()
 
@@ -47,7 +50,6 @@ ALLOWED_HOSTS = [
 ]
 
 
-
 ALLOWED_CIDR_NETS = ['10.0.0.0/8', '127.0.0.0/8']
 
 # Application definition
@@ -63,6 +65,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'youbeon_api.apps.YoubeonApiConfig'
 ]
+
+FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
+                        "django_excel.TemporaryExcelFileUploadHandler")
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -128,12 +134,12 @@ CORS_ORIGIN_ALLOW_ALL = True
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-#DATABASES = {
+# DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
-#}
+# }
 
 DATABASES = {
     'default': dj_database_url.config(default='sqlite:///'+os.path.join(BASE_DIR, 'db.sqlite3'))
