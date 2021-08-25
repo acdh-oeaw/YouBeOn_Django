@@ -15,6 +15,7 @@ from youbeon_api.models import Kategorie, Idee, Religion, Influencer, Ort, Refer
 class UploadFileForm(forms.Form):
     connections = forms.FileField()
     accounts = forms.FileField()
+    koordinaten = forms.FileField()
 
 
 class InfluencerViewSet(viewsets.ModelViewSet):
@@ -89,14 +90,26 @@ def import_data(request):
         if form.is_valid():
             connections = request.FILES["connections"].get_array()
             accounts = request.FILES["accounts"].get_array()
+            koordinaten = request.FILES["koordinaten"].get_array()
             #check if data is in the correct format
-            if(connections[0] == ['ID', 'Kodes', 'Referenz', 'Geändert von', 'Interview']):
+            if(connections[0] == ['ID', 'Zitatname', 'Kodes', 'Geändert von', 'Interview']):
                 for entry in connections:
-                    print(entry)
+                    kodes = entry[2]
+                    kodes = kodes.split('\n')
+                    for data in kodes:
+                        if(data.startswith('I:')):
+                            nameToAdd = data.replace('I: ', '')
+                            Idee.objects.get_or_create(name=nameToAdd)
+                        if(data.startswith('R:')):
+                            nameToAdd = data.replace('R: ', '')
+                            Religion.objects.get_or_create(name=nameToAdd)
+                        if(data.startswith('K:')):
+                            nameToAdd = data.replace('K: ', '')
+                            Kategorie.objects.get_or_create(name=nameToAdd)
+
+
         else:
             return HttpResponseBadRequest()
-        print(request.FILES["connections"])
-        print(request.FILES["accounts"])
     else:
         form = UploadFileForm()
     return render(
