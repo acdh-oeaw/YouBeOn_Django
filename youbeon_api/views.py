@@ -139,6 +139,8 @@ def import_data(request):
                                 splitCoordinates = [0,0]
                                 splitCoordinates[1] = trunc_at(coordRemoveDouble,',')
                                 splitCoordinates[0] = coordRemoveDouble.replace(splitCoordinates[1] + ',','')
+                                splitCoordinates[0].replace(',','.')
+                                splitCoordinates[1].replace(',','.')
                             else:
                                 splitCoordinates=['noData','noData']
                             ortVerknüpfungen.append(
