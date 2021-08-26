@@ -3,13 +3,14 @@ from rest_framework import viewsets
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.fields import CharField
 from rest_framework.parsers import JSONParser
 from collections import Counter
 from django import forms
 from csv import reader
 
-from youbeon_api.serializer import KategorieSerializer, IdeeSerializer, ReligionSerializer, InfluencerSerializer, OrtSerializer, RefernzSerializer
-from youbeon_api.models import Kategorie, Idee, Religion, Influencer, Ort, Referenz
+from youbeon_api.serializer import KategorieSerializer, IdeeSerializer, ReligionSerializer, InfluencerSerializer, OrtSerializer
+from youbeon_api.models import Kategorie, Idee, Religion, Influencer, Ort
 
 
 class UploadFileForm(forms.Form):
@@ -83,6 +84,9 @@ class ReligionViewSet(viewsets.ModelViewSet):
     queryset = Religion.objects.all()
     serializer_class = ReligionSerializer
 
+def trunc_at(s, d, n=2):
+    "Returns s truncated at the n'th (2nd by default) occurrence of the delimiter, d."
+    return d.join(s.split(d, n)[:n])
 
 def import_data(request):
     if request.method == "POST":
@@ -91,21 +95,75 @@ def import_data(request):
             connections = request.FILES["connections"].get_array()
             accounts = request.FILES["accounts"].get_array()
             koordinaten = request.FILES["koordinaten"].get_array()
-            #check if data is in the correct format
+            # check if data is in the correct format
             if(connections[0] == ['ID', 'Zitatname', 'Kodes', 'Geändert von', 'Interview']):
                 for entry in connections:
                     kodes = entry[2]
                     kodes = kodes.split('\n')
+                    # variables for Influencer/Ort
+                    influencerVerknüpfungen = []
+                    ortVerknüpfungen = []
+                    ideen = []
+                    kategorien = []
+                    religionen = []
                     for data in kodes:
                         if(data.startswith('I:')):
                             nameToAdd = data.replace('I: ', '')
-                            Idee.objects.get_or_create(name=nameToAdd)
+                            ideen.append(
+                                Idee.objects.get_or_create(name=nameToAdd)[0])
+
                         if(data.startswith('R:')):
                             nameToAdd = data.replace('R: ', '')
-                            Religion.objects.get_or_create(name=nameToAdd)
+                            religionen.append(
+                                Religion.objects.get_or_create(name=nameToAdd)[0])
+
                         if(data.startswith('K:')):
                             nameToAdd = data.replace('K: ', '')
-                            Kategorie.objects.get_or_create(name=nameToAdd)
+                            kategorien.append(
+                                Kategorie.objects.get_or_create(name=nameToAdd)[0])
+
+                        if(data.startswith('A:')):
+                            nameToAdd = data.replace('A: ', '')
+                            filteredLinks = filter(
+                                lambda x: x[1] == data, accounts)
+                            influencerVerknüpfungen.append(
+                                [nameToAdd, list(filteredLinks)[0][2], entry[4]])
+
+                        if(data.startswith('O: ')):
+                            nameToAdd = data.replace('O: ', '')
+                            filteredCoordinates = filter(
+                                lambda x: x[1] == data, koordinaten)
+                            listCoordinatees = list(filteredCoordinates)
+                            if(listCoordinatees != []):
+                                coordRemoveDouble = listCoordinatees[0][2].replace(' ', '').split('-')[0]
+                                splitCoordinates = [0,0]
+                                splitCoordinates[1] = trunc_at(coordRemoveDouble,',')
+                                splitCoordinates[0] = coordRemoveDouble.replace(splitCoordinates[1] + ',','')
+                            else:
+                                splitCoordinates=['noData','noData']
+                            ortVerknüpfungen.append(
+                                [nameToAdd, splitCoordinates, entry[4]]
+                            )
+
+                    for influencer in influencerVerknüpfungen:
+                        influencerUnit = Influencer.objects.get_or_create(
+                            name=influencer[0], link=influencer[1], interview=influencer[2])[0]
+                        for idee in ideen:
+                            influencerUnit.idee.add(idee)
+                        for kategorie in kategorien:
+                            influencerUnit.kategorie.add(kategorie)
+                        for religion in religionen:
+                            influencerUnit.religion.add(religion)
+
+                    for ort in ortVerknüpfungen:
+                        ortUnit = Ort.objects.get_or_create(
+                            bezeichnung=ort[0], koordinate_l=ort[1][0], koordinate_b=ort[1][1], interview=ort[2])[0]
+                        for idee in ideen:
+                            ortUnit.idee.add(idee)
+                        for kategorie in kategorien:
+                            ortUnit.kategorie.add(kategorie)
+                        for religion in religionen:
+                            ortUnit.religion.add(religion)
 
 
         else:

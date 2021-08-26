@@ -31,17 +31,11 @@ class Ort(models.Model):
     interview = models.CharField(max_length=100)
 
 
-class Referenz(models.Model):
-    id = models.IntegerField(primary_key=True)
-    kodes = models.CharField(max_length=500)
-    interview = models.CharField(max_length=100)
-
-
 class Influencer(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     bemerkung = models.CharField(max_length=200, null=True, blank=True)
-    location = models.CharField(max_length=100)
+    location = models.CharField(max_length=100, null=True, blank=True)
     kategorie = models.ManyToManyField(Kategorie)
     idee = models.ManyToManyField(Idee)
     religion = models.ManyToManyField(Religion)

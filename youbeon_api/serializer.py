@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework import serializers
 
-from youbeon_api.models import Idee, Influencer, Kategorie, Ort, Religion, Referenz
+from youbeon_api.models import Idee, Influencer, Kategorie, Ort, Religion
 
 
 
@@ -25,11 +25,6 @@ class ReligionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Religion
         fields = ('id', 'name')
-
-class RefernzSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Referenz
-        fields = ('id', 'kode', 'interview')
 
 class KategorieSerializer(serializers.ModelSerializer):
     class Meta:
