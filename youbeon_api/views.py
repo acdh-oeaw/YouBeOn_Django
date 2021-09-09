@@ -129,7 +129,7 @@ def import_data(request):
                             influencerVerknüpfungen.append(
                                 [nameToAdd, list(filteredLinks)[0][2], entry[4]])
 
-                        if(data.startswith('O: ')):
+                        if(data.startswith('O: ') or data.startswith('OS: ') or data.startswith('OR: ') or data.startswith('OL: ')):
                             nameToAdd = data.replace('O: ', '')
                             filteredCoordinates = filter(
                                 lambda x: x[1] == data, koordinaten)
