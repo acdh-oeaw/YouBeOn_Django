@@ -131,11 +131,14 @@ def import_data(request):
 
                         if(data.startswith('O: ') or data.startswith('OS: ') or data.startswith('OR: ') or data.startswith('OL: ')):
                             nameToAdd = data.replace('O: ', '')
+                            nameToAdd = nameToAdd.replace('OS: ', '')
+                            nameToAdd = nameToAdd.replace('OR: ', '')
+                            nameToAdd = nameToAdd.replace('OL: ', '')
                             filteredCoordinates = filter(
                                 lambda x: x[1] == data, koordinaten)
                             listCoordinatees = list(filteredCoordinates)
                             if(listCoordinatees != []):
-                                coordRemoveDouble = listCoordinatees[0][2].replace(' ', '').split('-')[0]
+                                coordRemoveDouble = listCoordinatees[0][2].split(' - ')[0].replace(' ', '')
                                 splitCoordinates = [0,0]
                                 splitCoordinates[1] = trunc_at(coordRemoveDouble,',')
                                 splitCoordinates[0] = coordRemoveDouble.replace(splitCoordinates[1] + ',','')
