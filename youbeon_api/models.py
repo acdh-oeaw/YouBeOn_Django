@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 
@@ -17,8 +16,6 @@ class Religion(models.Model):
 class Idee(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    cluster = models.CharField(max_length=100, null=True, blank=True)
-    cooccurence = ArrayField(models.CharField(max_length=100), null=True, blank=True)
 
 
 class Ort(models.Model):
