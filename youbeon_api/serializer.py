@@ -19,7 +19,7 @@ class OrtSerializer(serializers.ModelSerializer):
 class IdeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Idee
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'cooccurence', 'cluster')
 
 class ReligionSerializer(serializers.ModelSerializer):
     class Meta:
