@@ -84,14 +84,20 @@ class ReligionViewSet(viewsets.ModelViewSet):
     queryset = Religion.objects.all()
     serializer_class = ReligionSerializer
 
+
 def trunc_at(s, d, n=2):
     "Returns s truncated at the n'th (2nd by default) occurrence of the delimiter, d."
     return d.join(s.split(d, n)[:n])
+
+def getName(idea):
+    return idea.name
+
 
 def import_data(request):
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
+            print('doing stuff')
             connections = request.FILES["connections"].get_array()
             accounts = request.FILES["accounts"].get_array()
             koordinaten = request.FILES["koordinaten"].get_array()
@@ -138,14 +144,17 @@ def import_data(request):
                                 lambda x: x[1] == data, koordinaten)
                             listCoordinatees = list(filteredCoordinates)
                             if(listCoordinatees != []):
-                                coordRemoveDouble = listCoordinatees[0][2].split(' - ')[0].replace(' ', '')
-                                splitCoordinates = [0,0]
-                                splitCoordinates[1] = trunc_at(coordRemoveDouble,',')
-                                splitCoordinates[0] = coordRemoveDouble.replace(splitCoordinates[1] + ',','')
-                                splitCoordinates[0].replace(',','.')
-                                splitCoordinates[1].replace(',','.')
+                                coordRemoveDouble = listCoordinatees[0][2].split(
+                                    ' - ')[0].replace(' ', '')
+                                splitCoordinates = [0, 0]
+                                splitCoordinates[1] = trunc_at(
+                                    coordRemoveDouble, ',')
+                                splitCoordinates[0] = coordRemoveDouble.replace(
+                                    splitCoordinates[1] + ',', '')
+                                splitCoordinates[0].replace(',', '.')
+                                splitCoordinates[1].replace(',', '.')
                             else:
-                                splitCoordinates=['noData','noData']
+                                splitCoordinates = ['noData', 'noData']
                             ortVerknüpfungen.append(
                                 [nameToAdd, splitCoordinates, entry[4]]
                             )
@@ -170,6 +179,12 @@ def import_data(request):
                         for religion in religionen:
                             ortUnit.religion.add(religion)
 
+                    for idee in ideen:
+                        
+                        idee.cooccurence = list(set(map(getName, ideen)) - set([idee.name]))
+                        idee = Idee(
+                            id=idee.id, name=idee.name, cluster=idee.cluster, cooccurence=idee.cooccurence)
+                        idee.save()
 
         else:
             return HttpResponseBadRequest()
