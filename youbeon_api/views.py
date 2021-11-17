@@ -89,6 +89,7 @@ def trunc_at(s, d, n=2):
     "Returns s truncated at the n'th (2nd by default) occurrence of the delimiter, d."
     return d.join(s.split(d, n)[:n])
 
+
 def getName(idea):
     return idea.name
 
@@ -97,7 +98,6 @@ def import_data(request):
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            print('doing stuff')
             connections = request.FILES["connections"].get_array()
             accounts = request.FILES["accounts"].get_array()
             koordinaten = request.FILES["koordinaten"].get_array()
@@ -180,10 +180,13 @@ def import_data(request):
                             ortUnit.religion.add(religion)
 
                     for idee in ideen:
-                        
-                        idee.cooccurence = list(set(map(getName, ideen)) - set([idee.name]))
-                        idee = Idee(
-                            id=idee.id, name=idee.name, cluster=idee.cluster, cooccurence=idee.cooccurence)
+                        idee = Idee.objects.get(id=idee.id)
+                        temp_cooc = list(
+                            set(map(getName, ideen)) - set([idee.name]))
+                        if(idee.cooccurence != None):
+                            idee.cooccurence = idee.cooccurence + list(set(temp_cooc) - set(idee.cooccurence))
+                        else:
+                            idee.cooccurence = temp_cooc
                         idee.save()
 
         else:
