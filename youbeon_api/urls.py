@@ -1,4 +1,4 @@
-from django.urls import include, path, re_path
+from django.urls import include, path
 
 from rest_framework import routers
 
@@ -17,5 +17,6 @@ urlpatterns = [
    path('kategorie/filter/', views.kategorie_detail),
    path('idee/menge/', views.idee_menge),
    path('', include(router.urls)),
-   #path('upload/', views.import_data)
+   path('upload/', views.import_data),
+   path('accounts/', include('django.contrib.auth.urls'))
 ]

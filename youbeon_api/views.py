@@ -8,6 +8,7 @@ from rest_framework.parsers import JSONParser
 from collections import Counter
 from django import forms
 from csv import reader
+from django.contrib.auth.decorators import login_required
 
 from youbeon_api.serializer import KategorieSerializer, IdeeSerializer, ReligionSerializer, InfluencerSerializer, OrtSerializer
 from youbeon_api.models import Kategorie, Idee, Religion, Influencer, Ort
@@ -93,7 +94,7 @@ def trunc_at(s, d, n=2):
 def getName(idea):
     return idea.name
 
-
+@login_required
 def import_data(request):
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
@@ -184,7 +185,8 @@ def import_data(request):
                         temp_cooc = list(
                             set(map(getName, ideen)) - set([idee.name]))
                         if(idee.cooccurence != None):
-                            idee.cooccurence = idee.cooccurence + list(set(temp_cooc) - set(idee.cooccurence))
+                            idee.cooccurence = idee.cooccurence + \
+                                list(set(temp_cooc) - set(idee.cooccurence))
                         else:
                             idee.cooccurence = temp_cooc
                         idee.save()
