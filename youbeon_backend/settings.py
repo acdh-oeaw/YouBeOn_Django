@@ -107,8 +107,6 @@ CORS_ALLOW_HEADERS = [
 ]
 
 ROOT_URLCONF = 'youbeon_backend.urls'
-print('----------------')
-print(str(BASE_DIR + '\\youbeon_django\\youbeon_api\\templates'))
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

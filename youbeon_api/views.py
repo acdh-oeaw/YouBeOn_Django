@@ -94,6 +94,7 @@ def trunc_at(s, d, n=2):
 def getName(idea):
     return idea.name
 
+
 @login_required
 def import_data(request):
     if request.method == "POST":
@@ -107,12 +108,15 @@ def import_data(request):
                 for entry in connections:
                     kodes = entry[2]
                     kodes = kodes.split('\n')
+                    trueReligionField = False
                     # variables for Influencer/Ort
                     influencerVerknüpfungen = []
                     ortVerknüpfungen = []
                     ideen = []
                     kategorien = []
                     religionen = []
+                    if('Insta:Religion' in kodes):
+                        trueReligionField = True
                     for data in kodes:
                         if(data.startswith('I:')):
                             nameToAdd = data.replace('I: ', '')
@@ -162,13 +166,18 @@ def import_data(request):
 
                     for influencer in influencerVerknüpfungen:
                         influencerUnit = Influencer.objects.get_or_create(
-                            name=influencer[0], link=influencer[1], interview=influencer[2])[0]
+                            name=influencer[0], link=influencer[1], interview=influencer[2], trueReligion = trueReligionField)[0]
+                        if (influencerUnit.mentions):
+                            influencerUnit.mentions += 1
+                        else:
+                            influencerUnit.mentions = 0 
                         for idee in ideen:
                             influencerUnit.idee.add(idee)
                         for kategorie in kategorien:
                             influencerUnit.kategorie.add(kategorie)
                         for religion in religionen:
                             influencerUnit.religion.add(religion)
+                        influencerUnit.save()
 
                     for ort in ortVerknüpfungen:
                         ortUnit = Ort.objects.get_or_create(

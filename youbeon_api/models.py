@@ -18,7 +18,8 @@ class Idee(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     cluster = models.CharField(max_length=100, null=True, blank=True)
-    cooccurence = ArrayField(models.CharField(max_length=100), null=True, blank=True)
+    cooccurence = ArrayField(models.CharField(
+        max_length=100), null=True, blank=True)
 
 
 class Ort(models.Model):
@@ -42,7 +43,7 @@ class Influencer(models.Model):
     kategorie = models.ManyToManyField(Kategorie)
     idee = models.ManyToManyField(Idee)
     religion = models.ManyToManyField(Religion)
-    osm_id = models.IntegerField(null=True, blank=True)
-    gnd = models.CharField(max_length=100, null=True, blank=True)
+    trueReligion = models.BooleanField()
     link = models.CharField(max_length=200, null=True, blank=True)
+    mentions = models.IntegerField(null=True, blank=True)
     interview = models.CharField(max_length=100)
