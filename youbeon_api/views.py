@@ -115,7 +115,8 @@ def import_data(request):
                     ideen = []
                     kategorien = []
                     religionen = []
-                    if('Insta:Religion' in kodes):
+                    print(kodes)
+                    if(any(item.replace(" ", "")=='Insta:Religion' for item in kodes)):
                         trueReligionField = True
                     for data in kodes:
                         if(data.startswith('I:')):
@@ -123,24 +124,24 @@ def import_data(request):
                             ideen.append(
                                 Idee.objects.get_or_create(name=nameToAdd)[0])
 
-                        if(data.startswith('R:')):
+                        elif(data.startswith('R:')):
                             nameToAdd = data.replace('R: ', '')
                             religionen.append(
                                 Religion.objects.get_or_create(name=nameToAdd)[0])
 
-                        if(data.startswith('K:')):
+                        elif(data.startswith('K:')):
                             nameToAdd = data.replace('K: ', '')
                             kategorien.append(
                                 Kategorie.objects.get_or_create(name=nameToAdd)[0])
 
-                        if(data.startswith('A:')):
+                        elif(data.startswith('A:')):
                             nameToAdd = data.replace('A: ', '')
                             filteredLinks = filter(
                                 lambda x: x[1] == data, accounts)
                             influencerVerknüpfungen.append(
                                 [nameToAdd, list(filteredLinks)[0][2], entry[4]])
 
-                        if(data.startswith('O: ') or data.startswith('OS: ') or data.startswith('OR: ') or data.startswith('OL: ')):
+                        elif(data.startswith('O: ') or data.startswith('OS: ') or data.startswith('OR: ') or data.startswith('OL: ')):
                             nameToAdd = data.replace('O: ', '')
                             nameToAdd = nameToAdd.replace('OS: ', '')
                             nameToAdd = nameToAdd.replace('OR: ', '')
@@ -166,11 +167,11 @@ def import_data(request):
 
                     for influencer in influencerVerknüpfungen:
                         influencerUnit = Influencer.objects.get_or_create(
-                            name=influencer[0], link=influencer[1], interview=influencer[2], trueReligion = trueReligionField)[0]
+                            name=influencer[0], link=influencer[1], interview=influencer[2], trueReligion=trueReligionField)[0]
                         if (influencerUnit.mentions):
                             influencerUnit.mentions += 1
                         else:
-                            influencerUnit.mentions = 0 
+                            influencerUnit.mentions = 0
                         for idee in ideen:
                             influencerUnit.idee.add(idee)
                         for kategorie in kategorien:
