@@ -104,7 +104,7 @@ def import_data(request):
             accounts = request.FILES["accounts"].get_array()
             koordinaten = request.FILES["koordinaten"].get_array()
             # check if data is in the correct format
-            if(connections[0] == ['ID', 'Zitatname', 'Kodes', 'Geändert von', 'Interview']):
+            if(connections[0] == ['ID', 'Zitatname', 'Kodes', 'Geändert von', 'Dokument']):
                 for entry in connections:
                     kodes = entry[2]
                     kodes = kodes.split('\n')
