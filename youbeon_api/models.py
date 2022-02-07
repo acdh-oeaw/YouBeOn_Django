@@ -1,5 +1,7 @@
+from email.policy import default
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.forms import BooleanField
 
 # Create your models here.
 
@@ -20,6 +22,8 @@ class Idee(models.Model):
     cluster = models.CharField(max_length=100, null=True, blank=True)
     cooccurence = ArrayField(models.CharField(
         max_length=100), null=True, blank=True)
+    interviews = ArrayField(models.CharField(
+        max_length=100), default=list)
 
 
 class Ort(models.Model):
@@ -31,7 +35,6 @@ class Ort(models.Model):
     kategorie = models.ManyToManyField(Kategorie)
     idee = models.ManyToManyField(Idee)
     religion = models.ManyToManyField(Religion)
-    osm_id = models.IntegerField(null=True, blank=True)
     interview = models.CharField(max_length=100)
 
 
@@ -43,7 +46,8 @@ class Influencer(models.Model):
     kategorie = models.ManyToManyField(Kategorie)
     idee = models.ManyToManyField(Idee)
     religion = models.ManyToManyField(Religion)
-    trueReligion = models.BooleanField()
+    trueReligion = models.BooleanField(default=False)
     link = models.CharField(max_length=200, null=True, blank=True)
     mentions = models.IntegerField(null=True, blank=True)
-    interview = models.CharField(max_length=100)
+    interviews = ArrayField(models.CharField(
+        max_length=100), null=True, blank=True)

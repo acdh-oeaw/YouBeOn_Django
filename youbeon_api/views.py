@@ -121,8 +121,11 @@ def import_data(request):
                     for data in kodes:
                         if(data.startswith('I:')):
                             nameToAdd = data.replace('I: ', '')
-                            ideen.append(
-                                Idee.objects.get_or_create(name=nameToAdd)[0])
+                            tempIdee = Idee.objects.get_or_create(name=nameToAdd)[0]
+                            if entry[4].split("-")[1] not in tempIdee.interviews:
+                                tempIdee.interviews.append(entry[4].split("-")[1])
+                            tempIdee.save()
+                            ideen.append(tempIdee)
 
                         elif(data.startswith('R:')):
                             nameToAdd = data.replace('R: ', '')
@@ -167,11 +170,15 @@ def import_data(request):
 
                     for influencer in influencerVerknüpfungen:
                         influencerUnit = Influencer.objects.get_or_create(
-                            name=influencer[0], link=influencer[1], interview=influencer[2], trueReligion=trueReligionField)[0]
-                        if (influencerUnit.mentions):
-                            influencerUnit.mentions += 1
+                            name=influencer[0], link=influencer[1])[0]
+                        influencerUnit.trueReligion = trueReligionField
+                        if (influencerUnit.mentions == 1):
+                            if influencer[2].split("-")[1] not in influencerUnit.interviews:
+                                influencerUnit.interviews.append(influencer[2].split("-")[1])
+                                influencerUnit.mentions += 1
                         else:
-                            influencerUnit.mentions = 0
+                            influencerUnit.interviews = [influencer[2]]
+                            influencerUnit.mentions = 1
                         for idee in ideen:
                             influencerUnit.idee.add(idee)
                         for kategorie in kategorien:
