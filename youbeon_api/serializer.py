@@ -14,7 +14,7 @@ class InfluencerSerializer(serializers.ModelSerializer):
 class OrtSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ort
-        fields = ('id', 'bezeichnung', 'bemerkung', 'koordinate_l', 'koordinate_b', 'osm_id', 'kategorie', 'idee', 'religion', 'interview')
+        fields = ('id', 'bezeichnung', 'bemerkung', 'koordinate_l', 'koordinate_b', 'kategorie', 'idee', 'religion', 'interview')
 
 class IdeeSerializer(serializers.ModelSerializer):
     class Meta:
