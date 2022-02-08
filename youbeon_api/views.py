@@ -104,7 +104,7 @@ def import_data(request):
             accounts = request.FILES["accounts"].get_array()
             koordinaten = request.FILES["koordinaten"].get_array()
             # check if data is in the correct format
-            if(connections[0] == ['ID', 'Zitatname', 'Kodes', 'Geändert von', 'Dokument']):
+            if(connections[0] == ['ID', 'Zitatname', 'Kodes', 'Dokument']):
                 for entry in connections:
                     kodes = entry[2]
                     kodes = kodes.split('\n')
@@ -115,15 +115,14 @@ def import_data(request):
                     ideen = []
                     kategorien = []
                     religionen = []
-                    print(kodes)
                     if(any(item.replace(" ", "")=='Insta:Religion' for item in kodes)):
                         trueReligionField = True
                     for data in kodes:
                         if(data.startswith('I:')):
                             nameToAdd = data.replace('I: ', '')
                             tempIdee = Idee.objects.get_or_create(name=nameToAdd)[0]
-                            if entry[4].split("-")[1] not in tempIdee.interviews:
-                                tempIdee.interviews.append(entry[4].split("-")[1])
+                            if entry[3].split("-")[1] not in tempIdee.interviews:
+                                tempIdee.interviews.append(entry[3].split("-")[1])
                             tempIdee.save()
                             ideen.append(tempIdee)
 
@@ -142,7 +141,7 @@ def import_data(request):
                             filteredLinks = filter(
                                 lambda x: x[1] == data, accounts)
                             influencerVerknüpfungen.append(
-                                [nameToAdd, list(filteredLinks)[0][2], entry[4]])
+                                [nameToAdd, list(filteredLinks)[0][2], entry[3]])
 
                         elif(data.startswith('O: ') or data.startswith('OS: ') or data.startswith('OR: ') or data.startswith('OL: ')):
                             nameToAdd = data.replace('O: ', '')
@@ -165,7 +164,7 @@ def import_data(request):
                             else:
                                 splitCoordinates = ['noData', 'noData']
                             ortVerknüpfungen.append(
-                                [nameToAdd, splitCoordinates, entry[4]]
+                                [nameToAdd, splitCoordinates, entry[3]]
                             )
 
                     for influencer in influencerVerknüpfungen:
