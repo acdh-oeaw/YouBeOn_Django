@@ -9,7 +9,7 @@ from youbeon_api.models import Idee, Influencer, Kategorie, Ort, Religion
 class InfluencerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Influencer
-        fields = ('id', 'name', 'bemerkung', 'location', 'kategorie', 'idee', 'trueReligion', 'religion', 'interview', 'mentions', 'link')
+        fields = ('id', 'name', 'bemerkung', 'location', 'kategorie', 'idee', 'trueReligion', 'religion', 'interviews', 'mentions', 'link')
 
 class OrtSerializer(serializers.ModelSerializer):
     class Meta:
