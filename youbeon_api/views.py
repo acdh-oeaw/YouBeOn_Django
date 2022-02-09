@@ -141,7 +141,7 @@ def import_data(request):
                             filteredLinks = filter(
                                 lambda x: x[1] == data, accounts)
                             influencerVerknüpfungen.append(
-                                [nameToAdd, list(filteredLinks)[0][2], entry[3]])
+                                [nameToAdd, list(filteredLinks)[0][2], entry[3].split("-")[1]])
 
                         elif(data.startswith('O: ') or data.startswith('OS: ') or data.startswith('OR: ') or data.startswith('OL: ')):
                             nameToAdd = data.replace('O: ', '')
@@ -172,9 +172,9 @@ def import_data(request):
                             name=influencer[0], link=influencer[1])[0]
                         influencerUnit.trueReligion = trueReligionField
                         if (influencerUnit.mentions == 1):
-                            if influencer[2].split("-")[1] not in influencerUnit.interviews:
-                                influencerUnit.interviews.append(influencer[2].split("-")[1])
-                                influencerUnit.mentions += 1
+                            influencerUnit.mentions += 1
+                            if influencer[2] not in influencerUnit.interviews:
+                                influencerUnit.interviews.append(influencer[2])
                         else:
                             influencerUnit.interviews = [influencer[2]]
                             influencerUnit.mentions = 1
