@@ -171,7 +171,7 @@ def import_data(request):
                         influencerUnit = Influencer.objects.get_or_create(
                             name=influencer[0], link=influencer[1])[0]
                         influencerUnit.trueReligion = trueReligionField
-                        if (influencerUnit.mentions == 1):
+                        if (influencerUnit.mentions is not None):
                             influencerUnit.mentions += 1
                             if influencer[2] not in influencerUnit.interviews:
                                 influencerUnit.interviews.append(influencer[2])
