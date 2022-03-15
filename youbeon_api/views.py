@@ -188,13 +188,19 @@ def import_data(request):
 
                     for ort in ortVerknüpfungen:
                         ortUnit = Ort.objects.get_or_create(
-                            bezeichnung=ort[0], koordinate_l=ort[1][0], koordinate_b=ort[1][1], interview=ort[2])[0]
+                            bezeichnung=ort[0], koordinate_l=ort[1][0], koordinate_b=ort[1][1])[0]
                         for idee in ideen:
                             ortUnit.idee.add(idee)
                         for kategorie in kategorien:
                             ortUnit.kategorie.add(kategorie)
                         for religion in religionen:
                             ortUnit.religion.add(religion)
+                        if ortUnit.interview is None:
+                            ortUnit.interview = [ort[2]]
+                        else:
+                            if ort[2] not in ortUnit.interview:
+                                ortUnit.interview.append(ort[2])
+                        ortUnit.save()
 
                     for idee in ideen:
                         idee = Idee.objects.get(id=idee.id)

@@ -35,7 +35,7 @@ class Ort(models.Model):
     kategorie = models.ManyToManyField(Kategorie)
     idee = models.ManyToManyField(Idee)
     religion = models.ManyToManyField(Religion)
-    interview = models.CharField(max_length=100)
+    interview = ArrayField(models.CharField(max_length=100), null=True, blank=True)
 
 
 class Influencer(models.Model):
