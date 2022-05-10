@@ -24,6 +24,8 @@ class Idee(models.Model):
         max_length=100), null=True, blank=True)
     interviews = ArrayField(models.CharField(
         max_length=100), default=list)
+    zitate = ArrayField(models.CharField(
+        max_length=500), default=list)
 
 
 class Ort(models.Model):

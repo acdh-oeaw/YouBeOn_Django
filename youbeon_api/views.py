@@ -18,6 +18,7 @@ class UploadFileForm(forms.Form):
     connections = forms.FileField()
     accounts = forms.FileField()
     koordinaten = forms.FileField()
+    zitate = forms.FileField()
 
 
 class InfluencerViewSet(viewsets.ModelViewSet):
@@ -103,6 +104,7 @@ def import_data(request):
             connections = request.FILES["connections"].get_array()
             accounts = request.FILES["accounts"].get_array()
             koordinaten = request.FILES["koordinaten"].get_array()
+            quotes = request.FILES["zitate"].get_array()
             # check if data is in the correct format
             if(connections[0] == ['ID', 'Referenz', 'Kodes', 'Dokument']):
                 for entry in connections:
@@ -204,6 +206,11 @@ def import_data(request):
 
                     for idee in ideen:
                         idee = Idee.objects.get(id=idee.id)
+                        for zitateEntry in quotes:
+                            if zitateEntry[1].replace("I: ", "") == idee.name:
+                                for zitat in zitateEntry[2::]:
+                                    if(zitat != '' and  zitat not in idee.zitate):
+                                        idee.zitate.append(zitat)
                         temp_cooc = list(
                             set(map(getName, ideen)) - set([idee.name]))
                         if(idee.cooccurence != None):
