@@ -94,7 +94,7 @@ jobs:
             envURL: ${{ github.repositoryUrl }}
           service:
             enabled: true
-            name: ${{ secrets.APP_NAME }}
+            name: ${{ secrets.APP_NAME }}-${{ github.ref_name }}
             url: ${{ secrets.PUBLIC_URL }}
             additionalHosts:
               - ${{ secrets.APP_NAME }}-${{ github.ref_name }}.acdh-cluster.arz.oeaw.ac.at
@@ -148,7 +148,7 @@ jobs:
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }} 
         run: |
-          helm upgrade ${{ secrets.APP_NAME }} \
+          helm upgrade "${{ secrets.APP_NAME }}-${{ github.ref_name }}" \
             --values auto-deploy-app-values.yaml --install --atomic --wait \
             --set application.secretName="${{ secrets.APP_NAME }}-${{ github.ref_name }}" ${{ secrets.HELM_UPGRADE_EXTRA_ARGS }} \
           .github/auto-deploy-app
