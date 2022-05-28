@@ -77,7 +77,7 @@ jobs:
           mkdir ${HOME}/.kube
           echo ${{ secrets.ACDH_KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
           chmod 0600 ${HOME}/.kube/config
-          kubectl config set-context --current --namespace=${{ secrets.APP_NAME }}
+          kubectl config set-context --current --namespace=${{ secrets.KUBE_NAMESPACE }}
           kubectl get pod
       - name: Create auto-deploy-app-values.yaml
         run: |
