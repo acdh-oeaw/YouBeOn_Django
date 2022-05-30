@@ -6,7 +6,7 @@ Verwaltet den Zugriff auf die Datenbank und beinhaltet eine RestApi mit der auf 
 
 
 - Projekt clonen
-- pip install
+- pip install -r requirements.txt
 
 # API:
 
