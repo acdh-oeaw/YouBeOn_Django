@@ -107,6 +107,12 @@ def import_data(request):
             quotes = request.FILES["zitate"].get_array()
             # check if data is in the correct format
             if(connections[0] == ['ID', 'Referenz', 'Kodes', 'Dokument']):
+                # get a clean slate before adding new data (ideally that wouldnt be necessary -> only add elements that do not exist yet and deal with connections accordingly => should be done later)
+                Ort.objects.all().delete()
+                Influencer.objects.all().delete()
+                Idee.objects.all().delete()
+                Religion.objects.all().delete()
+                Kategorie.objects.all().delete()
                 for entry in connections:
                     kodes = entry[2]
                     kodes = kodes.split('\n')
@@ -117,14 +123,16 @@ def import_data(request):
                     ideen = []
                     kategorien = []
                     religionen = []
-                    if(any(item.replace(" ", "")=='Insta:Religion' for item in kodes)):
+                    if(any(item.replace(" ", "") == 'Insta:Religion' for item in kodes)):
                         trueReligionField = True
                     for data in kodes:
                         if(data.startswith('I:')):
                             nameToAdd = data.replace('I: ', '')
-                            tempIdee = Idee.objects.get_or_create(name=nameToAdd)[0]
+                            tempIdee = Idee.objects.get_or_create(name=nameToAdd)[
+                                0]
                             if entry[3].split("-")[1] not in tempIdee.interviews:
-                                tempIdee.interviews.append(entry[3].split("-")[1])
+                                tempIdee.interviews.append(
+                                    entry[3].split("-")[1])
                             tempIdee.save()
                             ideen.append(tempIdee)
 
@@ -209,7 +217,7 @@ def import_data(request):
                         for zitateEntry in quotes:
                             if zitateEntry[1].replace("I: ", "") == idee.name:
                                 for zitat in zitateEntry[2::]:
-                                    if(zitat != '' and  zitat not in idee.zitate):
+                                    if(zitat != '' and zitat not in idee.zitate):
                                         idee.zitate.append(zitat)
                         temp_cooc = list(
                             set(map(getName, ideen)) - set([idee.name]))
