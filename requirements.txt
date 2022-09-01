@@ -18,3 +18,5 @@ six==1.11.0
 python-dotenv==0.17.1
 pyexcel>=0.5.7
 pyexcel-webio>=0.1.2
+pyexcel-xls>=0.7.0
+pyexcel-xlsx>=0.6.0
