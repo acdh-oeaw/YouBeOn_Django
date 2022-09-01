@@ -106,6 +106,7 @@ def import_data(request):
             koordinaten = request.FILES["koordinaten"].get_array()
             quotes = request.FILES["zitate"].get_array()
             # check if data is in the correct format
+            log('Checking files')
             if(connections[0] == ['ID', 'Referenz', 'Kodes', 'Dokument']):
                 # get a clean slate before adding new data (ideally that wouldnt be necessary -> only add elements that do not exist yet and deal with connections accordingly => should be done later)
                 Ort.objects.all().delete()
@@ -227,7 +228,7 @@ def import_data(request):
                         else:
                             idee.cooccurence = temp_cooc
                         idee.save()
-
+            else: log('Format check failed')
         else:
             return HttpResponseBadRequest()
     else:
