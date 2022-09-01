@@ -227,6 +227,7 @@ def import_data(request):
                         else:
                             idee.cooccurence = temp_cooc
                         idee.save()
+            else: return HttpResponseBadRequest()
         else:
             return HttpResponseBadRequest()
     else:
